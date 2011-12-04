@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<table>
+  <tr>
+    <th><%= @player1.name %></th>
+    <th><%= @player2.name %></th>
+    <th><%= @player3.name %></th>
+    <th><%= @player4.name %></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @game.rounds.each do |round| %>
+  <tr>
+    <td><%= round.points.find_by_user_id(@player1.id).amount %></td>
+    <td><%= round.points.find_by_user_id(@player2.id).amount %></td>
+    <td><%= round.points.find_by_user_id(@player3.id).amount %></td>
+    <td><%= round.points.find_by_user_id(@player4.id).amount %></td>
+    <td><%= link_to 'Edit', edit_round_path(round) %></td>
+    <td><%= link_to 'Destroy', round, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+
+  <tr class="points_total">
+    <td> <%= @game.score(@player1) %> </td>
+    <td> <%= @game.score(@player2) %> </td>
+    <td> <%= @game.score(@player3) %> </td>
+    <td> <%= @game.score(@player4) %> </td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+
+<%= link_to 'Edit', edit_game_path(@game) %> |
+<%= link_to 'Back', games_path %>
