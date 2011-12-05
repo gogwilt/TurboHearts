@@ -1,4 +1,5 @@
 Turbohearts::Application.routes.draw do
+  
   resources :games
 
   resources :points
@@ -8,6 +9,10 @@ Turbohearts::Application.routes.draw do
   resources :users
   
   match 'logout' => 'Users#do_logout'
+  
+  match 'games/new_round' => 'Games#new_round', :via => "post"
+  match 'games/new_game' => 'Games#new_game', :via => "post"
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
