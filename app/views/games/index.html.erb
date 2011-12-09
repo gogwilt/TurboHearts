@@ -8,7 +8,6 @@
     <th>Player4</th>
     <th></th>
     <th></th>
-    <th></th>
   </tr>
 
 <% @games.each do |game| %>
@@ -18,7 +17,6 @@
     <td><%= game.player3.name %></td>
     <td><%= game.player4.name %></td>
     <td><%= link_to 'Show', game %></td>
-    <td><%= link_to 'Edit', edit_game_path(game) %></td>
     <td><%= link_to 'Destroy', game, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
