@@ -35,6 +35,10 @@ class RoundsController < ApplicationController
   # GET /rounds/1/edit
   def edit
     @round = Round.find(params[:id])
+    set_players_and_points
+  end
+  
+  def set_players_and_points
     @player1 = @round.game.player1
     @player2 = @round.game.player2
     @player3 = @round.game.player3
@@ -64,26 +68,22 @@ class RoundsController < ApplicationController
   # PUT /rounds/1
   # PUT /rounds/1.json
   def update
-    # TODO in edit.html.erb, fill in the values of the points beforehand
-    
     @round = Round.find(params[:id])
     
-    point1 = @round.points.find_by_user_id @round.game.player1
-    point2 = @round.points.find_by_user_id @round.game.player2
-    point3 = @round.points.find_by_user_id @round.game.player3
-    point4 = @round.points.find_by_user_id @round.game.player4
+    set_players_and_points
     
-    # TODO: Store points before updating, so that if any fail, we can revert them
+    orig1 = @point1.amount
+    orig2 = @point2.amount
+    orig3 = @point3.amount
+    orig4 = @point4.amount
     
-    point1.update_attributes(:amount => params[:player1_score])
-    point2.update_attributes(:amount => params[:player2_score])
-    point3.update_attributes(:amount => params[:player3_score])
-    point4.update_attributes(:amount => params[:player4_score])
-        
-    # TODO: fail if the points do not update correctly
-        
+    success = updatePoints(params[:player1_score], params[:player2_score], params[:player3_score], params[:player4_score])
+    unless success
+      updatePoints(orig1, orig2, orig3, orig4)
+    end
+    
     respond_to do |format|
-      if @round.update_attributes(params[:round])
+      if success
         format.html { redirect_to @round.game, notice: 'Round was successfully updated.' }
         format.json { head :ok }
       else
@@ -91,6 +91,10 @@ class RoundsController < ApplicationController
         format.json { render json: @round.errors, status: :unprocessable_entity }
       end
     end
+  end
+  
+  def updatePoints(player1_score, player2_score, player3_score, player4_score)
+    @point1.update_attributes(:amount => player1_score) and @point2.update_attributes(:amount => player2_score) and @point3.update_attributes(:amount => player3_score) and @point4.update_attributes(:amount => player4_score)
   end
 
   # DELETE /rounds/1
