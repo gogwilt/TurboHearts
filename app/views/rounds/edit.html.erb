@@ -1,6 +1,24 @@
 <h1>Editing round</h1>
 
-<%= render 'form' %>
+<table>
+  <tr>
+    <th><%= @player1.name %></th>
+    <th><%= @player2.name %></th>
+    <th><%= @player3.name %></th>
+    <th><%= @player4.name %></th>
+    <th></th>
+  </tr>
+  <tr>
+  <%= form_tag( "/rounds/#{@round.id}", :method => "put" ) do %>
+    <td> <%= text_field_tag :player1_score, @point1.amount %> </td>
+    <td> <%= text_field_tag :player2_score, @point2.amount %> </td>
+    <td> <%= text_field_tag :player3_score, @point3.amount %> </td>
+    <td> <%= text_field_tag :player4_score, @point4.amount %> </td>
+    <%= hidden_field_tag :id, @round.id %>
+    <td> <%= submit_tag "Update round" %> </td>
+    <% end %>
+  </tr>
+</table>
 
 <%= link_to 'Show', @round %> |
 <%= link_to 'Back', rounds_path %>

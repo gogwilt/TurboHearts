@@ -35,6 +35,14 @@ class RoundsController < ApplicationController
   # GET /rounds/1/edit
   def edit
     @round = Round.find(params[:id])
+    @player1 = @round.game.player1
+    @player2 = @round.game.player2
+    @player3 = @round.game.player3
+    @player4 = @round.game.player4
+    @point1 = @round.points.find_by_user_id @player1.id
+    @point2 = @round.points.find_by_user_id @player2.id
+    @point3 = @round.points.find_by_user_id @player3.id
+    @point4 = @round.points.find_by_user_id @player4.id
   end
 
   # POST /rounds
@@ -56,11 +64,27 @@ class RoundsController < ApplicationController
   # PUT /rounds/1
   # PUT /rounds/1.json
   def update
+    # TODO in edit.html.erb, fill in the values of the points beforehand
+    
     @round = Round.find(params[:id])
-
+    
+    point1 = @round.points.find_by_user_id @round.game.player1
+    point2 = @round.points.find_by_user_id @round.game.player2
+    point3 = @round.points.find_by_user_id @round.game.player3
+    point4 = @round.points.find_by_user_id @round.game.player4
+    
+    # TODO: Store points before updating, so that if any fail, we can revert them
+    
+    point1.update_attributes(:amount => params[:player1_score])
+    point2.update_attributes(:amount => params[:player2_score])
+    point3.update_attributes(:amount => params[:player3_score])
+    point4.update_attributes(:amount => params[:player4_score])
+        
+    # TODO: fail if the points do not update correctly
+        
     respond_to do |format|
       if @round.update_attributes(params[:round])
-        format.html { redirect_to @round, notice: 'Round was successfully updated.' }
+        format.html { redirect_to @round.game, notice: 'Round was successfully updated.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
