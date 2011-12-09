@@ -1,4 +1,5 @@
 Turbohearts::Application.routes.draw do
+  root :to => 'Games#index'
   
   resources :games
 
@@ -12,7 +13,6 @@ Turbohearts::Application.routes.draw do
   
   match 'games/new_round' => 'Games#new_round', :via => "post"
   match 'games/new_game' => 'Games#new_game', :via => "post"
-
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
